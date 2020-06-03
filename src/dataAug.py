@@ -1,12 +1,11 @@
 from keras.preprocessing.image import load_img,img_to_array
 from os import walk
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-import cv2
+from cv2 import cv2
 from scipy import ndimage
 import numpy as np
 
-trainPath='./INPUT/rps/'
-testPath='./INPUT/rps-test-set/'
+Path='./INPUT/rps/'
 
 def fileList(path,directoryname):
     """
@@ -18,8 +17,8 @@ def loadImgd(path,directory,fileList):
     """
     Método que creara las imagenes
     """
-    datagen = ImageDataGenerator(rotation_range=40,width_shift_range=0.2,height_shift_range=0.2,shear_range=0.2,
-        horizontal_flip=True,vertical_flip=True,brightness_range=[0.2,1.0],fill_mode='nearest')
+    datagen = ImageDataGenerator(rotation_range=15,width_shift_range=0.2,height_shift_range=0.2,shear_range=0.2,
+        horizontal_flip=True,brightness_range=[0.2,1.0],fill_mode='nearest')
     for file in fileList:
         img = load_img(f"{path}{directory}/{file}")
         arr = img_to_array(img)
@@ -30,23 +29,18 @@ def loadImgd(path,directory,fileList):
             if i > 20:
                 break
 
-
-#fpaper=fileList(trainPath,"paper")
-#frock=fileList(trainPath,"rock")
-#fscissors=fileList(trainPath,"scissors")
-Path='INPUT/Videos/'
 def dataAug():
     """
     Crea las imagenes de las 3 clases
     """
-    fpaper=fileList('INPUT/Videos/',"paper")
-    frock=fileList('INPUT/Videos/',"rock")
-    fscissors=fileList('INPUT/Videos/',"scissors")
+    fpaper=fileList(Path,"paper")
+    frock=fileList(Path,"rock")
+    fscissors=fileList(Path,"scissors")
     loadImgd(Path,"paper",fpaper) 
     loadImgd(Path,"rock",frock) 
     loadImgd(Path,"scissors",fscissors) 
 
-def videoToImg(frame,video):
+def videoToImg(path,frame,video):
     """
     Pasa video a imagen.
     """
@@ -55,26 +49,19 @@ def videoToImg(frame,video):
     i = 0
     while r:
 
-        cv2.imwrite(f"INPUT/Videos/{frame}/{frame}%d.png" % i, image)     # save frame as JPEG file
+        cv2.imwrite(f"{path}{frame}/{frame}%d.png" % i, image)     # save frame as JPEG file
         r,image = vidcap.read()
         i += 1
 
 
+#Para obtener mi dataset, he grabado las posiciones y las he pasado a imágenes
 
-#videoToImg("paper","./INPUT/Videos/paper.mp4")
-#videoToImg("paper","./INPUT/Videos/paper1.mp4")
-#videoToImg("paper","./INPUT/Videos/paper2.mp4")
-#videoToImg("paper","./INPUT/Videos/paper3.mp4")
+#videoToImg(Path,"paper","./INPUT/Videos/paper.mp4")
+#videoToImg(Path,"rock","./INPUT/Videos/rock.mp4")
+#videoToImg(Path,"scissors","./INPUT/Videos/scissors.mp4")
+#videoToImg(Path,"lizard","./INPUT/Videos/lizard.mp4")
+#videoToImg(Path,"spock","./INPUT/Videos/spock.mp4")
 
-#videoToImg("rock","./INPUT/Videos/rock3.mp4")
-#videoToImg("rock","./INPUT/Videos/rock1.mp4")
-#videoToImg("rock","./INPUT/Videos/rock2.mp4")
-#videoToImg("rock","./INPUT/Videos/rock.mp4")
-
-#videoToImg("scissors","./INPUT/Videos/scissors1.mp4")
-#videoToImg("scissors","./INPUT/Videos/scissors2.mp4")
-#videoToImg("scissors","./INPUT/Videos/scissors3.mp4")
-#videoToImg("scissors","./INPUT/Videos/scissors.mp4")
 
 def cutImages(path,directoryname):
     """
@@ -83,13 +70,19 @@ def cutImages(path,directoryname):
     files = fileList(path,directoryname)
     for e in files:
         img = cv2.imread(f"{path}{directoryname}/{e}")
-        newimg = img[0:720, 0:720]
+        newimg = img[0:720, 0:540]
         rot = ndimage.rotate(newimg,270)
-        cv2.imwrite(f"{path}{directoryname}/{e}", newimg)
+        cv2.imwrite(f"{path}{directoryname}/{e}", rot)
     return 0
-cutImages("./INPUT/Videos/","paper")
-cutImages("./INPUT/Videos/","rock")
-cutImages("./INPUT/Videos/","scissors")
+
+
+#En mi caso, grábe las imagenes con otro dispositivo
+
+#cutImages(Path,"paper")
+#cutImages(Path,"rock")
+#cutImages(Path,"scissors")
+#cutImages(Path,"lizard")
+#cutImages(Path,"spock")
 
 def imgToFFT(path,directoryname):
     """

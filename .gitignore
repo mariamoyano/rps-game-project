@@ -1,0 +1,11 @@
+INPUT/
+.ipynb_checkpoints/
+__pycache__/
+.vscode/
+src/
+.git/
+notebooks/
+__init__.py
+modelResNet.h5
+modelAug.h5
+train20test.ipynb

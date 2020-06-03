@@ -1,4 +1,4 @@
-# rps-game-project
+# rps-game-project: 03/05/2020 Actualmente, está siendo ampliado
 
 ![Alt-Text](/INPUT/game.png)
 

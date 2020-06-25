@@ -8,11 +8,10 @@ Usando el poder de las redes neuronales, he creado el clásico juego de piedra-p
 
 **src**
 
-* Los archivos con los que funcionará el proyecto
-
-game.py - Ejecuta el juego
-train.py - Entrenamiento de las redes neuronales, he probado varios modelos con Tensorflow
-dataAug - funciones que he necesitado para crear mi dataset.
+* Los archivos con los que funcionará el proyecto:
+	*game.py - Ejecuta el juego
+	*train.py - Entrenamiento de las redes neuronales, he probado varios modelos con Tensorflow
+	*dataAug - funciones que he necesitado para crear mi dataset.
 
 **INPUT**
 

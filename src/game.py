@@ -1,18 +1,24 @@
 import random
-import tensorflow
 from tkinter import Tk, Label, Frame, BOTTOM,LEFT,RIGHT, ttk,messagebox
 import cv2
 from PIL import Image, ImageTk
 import numpy as np
-from tensorflow.keras.models import Sequential, load_model
 import os
 from playsound import playsound
 import threading
+#from keras.preprocessing.image import img_to_array
+from tensorflow.keras.models import load_model
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-model = load_model("modelAug4.h5")
-winSound="./INPUT/win.mp3"
-tieSound="./INPUT/tie.wav"
-loseSound="./INPUT/lose.mp3"
+model=load_model( 'modelResNet101.h5')
+#model=load_model("RPS_model.h5")
+#model= load_model("modelA.h5")
+#model = load_model("modelResNet.h5")
+#model = load_model("modelAug.h5")
+#model = load_model("modelAug4.h5")
+winSound= "/home/maria/GIT/rps-game-project/INPUT/win.mp3"
+tieSound= "/home/maria/GIT/rps-game-project/INPUT/tie.wav"
+loseSound= "/home/maria/GIT/rps-game-project/INPUT/lose.mp3"
 
 def play(yourChoice):
     options={0:"PAPER",1:"ROCK" ,2:"SCISSORS"}
@@ -50,24 +56,24 @@ def show():
 
 def predict():
     retval,frame = video.read()
-    img=cv2.resize(frame,(150,150))
+    img=cv2.resize(frame,(48,36))
     pred = model.predict(np.array([img]))
-    print("Predicted:",pred[0])
+    print("Predicted:",pred)
 
-    if max((pred[0])) == (pred[0])[0]:
+    if max(pred[0]) == (pred[0])[0]:
         yourChoice=0
         x=play(yourChoice)
-        threading.Thread(target=playsound, args=(x[1])).start()
+        threading.Thread(target=playsound, args=(x[1],)).start()
         messagebox.showinfo(message=x[0], title="Game results")
     elif max((pred[0])) == (pred[0])[1]:
         yourChoice=1
         x=play(yourChoice)
-        threading.Thread(target=playsound, args=(x[1])).start()
+        threading.Thread(target=playsound, args=(x[1],)).start()
         messagebox.showinfo(message=x[0], title="Game results")
     elif max((pred[0])) == (pred[0])[2]:
         yourChoice=2
         x=play(yourChoice)
-        threading.Thread(target=playsound, args=(x[1])).start()
+        threading.Thread(target=playsound, args=(x[1],)).start()
         messagebox.showinfo(message=x[0], title="Game results")
     else:
         print("Please, try again")

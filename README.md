@@ -1,4 +1,4 @@
-# rps-game-project: 03/05/2020 Actualmente, está siendo ampliado
+# rps-game-project: 
 
 ![Alt-Text](/INPUT/game.png)
 
@@ -9,3 +9,12 @@ Usando el poder de las redes neuronales, he creado el clásico juego de piedra-p
 **src**
 
 * Los archivos con los que funcionará el proyecto
+
+game.py - Ejecuta el juego
+train.py - Entrenamiento de las redes neuronales, he probado varios modelos con Tensorflow
+dataAug - funciones que he necesitado para crear mi dataset.
+
+**INPUT**
+
+* Archivos de entrada como sonidos o fotografía para el README.md
+

@@ -10,12 +10,10 @@ import threading
 from tensorflow.keras.models import load_model
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-model=load_model( 'modelResNet101.h5')
-#model=load_model("RPS_model.h5")
-#model= load_model("modelA.h5")
-#model = load_model("modelResNet.h5")
-#model = load_model("modelAug.h5")
-#model = load_model("modelAug4.h5")
+model=load_model('modelResNet101.h5')
+#model=load_model('modelDenseNet121.h5')
+#model=load_model("modelResNet50.h5")
+#model = load_model("modelIncResNetV2.h5")
 winSound= "/home/maria/GIT/rps-game-project/INPUT/win.mp3"
 tieSound= "/home/maria/GIT/rps-game-project/INPUT/tie.wav"
 loseSound= "/home/maria/GIT/rps-game-project/INPUT/lose.mp3"

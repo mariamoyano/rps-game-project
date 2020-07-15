@@ -1,7 +1,6 @@
-from keras.preprocessing.image import load_img,img_to_array
+from tensorflow.keras.preprocessing.image import load_img,img_to_array, ImageDataGenerator
 from os import walk
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from cv2 import cv2
+import cv2
 from scipy import ndimage
 import numpy as np
 
@@ -31,7 +30,7 @@ def loadImgd(path,directory,fileList):
 
 def dataAug():
     """
-    Crea las imagenes de las 3 clases
+    Crea más imagenes de las 3 clases a partir de data augmentation por si se quiere aumentar el número de imagenes.
     """
     fpaper=fileList(Path,"paper")
     frock=fileList(Path,"rock")
@@ -42,14 +41,14 @@ def dataAug():
 
 def videoToImg(path,frame,video):
     """
-    Pasa video a imagen.
+    Pasa video a imagen. Útil para crear nuestro dataset.
     """
     vidcap = cv2.VideoCapture(video)
     r,image = vidcap.read()
     i = 0
     while r:
 
-        cv2.imwrite(f"{path}{frame}/{frame}%d.png" % i, image)     # save frame as JPEG file
+        cv2.imwrite(f"{path}{frame}/{frame}%d.png" % i, image)    
         r,image = vidcap.read()
         i += 1
 
@@ -66,6 +65,7 @@ def videoToImg(path,frame,video):
 def cutImages(path,directoryname):
     """
     Recorta las imagenes extraidas del video y las gira como necesito
+    En mi caso, fue por que grábe imagenes con varios dispositivos. No es necesario si se graban los videos desde la camara wen.
     """
     files = fileList(path,directoryname)
     for e in files:
@@ -76,7 +76,7 @@ def cutImages(path,directoryname):
     return 0
 
 
-#En mi caso, grábe las imagenes con otro dispositivo
+
 
 #cutImages(Path,"paper")
 #cutImages(Path,"rock")
@@ -84,28 +84,3 @@ def cutImages(path,directoryname):
 #cutImages(Path,"lizard")
 #cutImages(Path,"spock")
 
-def imgToFFT(path,directoryname):
-    """
-    FFT
-    """
-    files = fileList(path,directoryname)
-    for e in files:
-        img = cv2.imread(f"{path}{directoryname}/{e}",0).astype(np.float32)/255
-   
-        f = np.fft.fft2(img)
-        fshift = np.fft.fftshift(f)
-
-        rows, cols = img.shape
-        crow,ccol = rows/2 , cols/2
-        fshift[crow-30:crow+30, ccol-30:ccol+30] = 0
-        f_ishift = np.fft.ifftshift(fshift)
-        img_back = np.fft.ifft2(f_ishift)
-        img_back = np.abs(img_back)
-        
-        cv2.imwrite(f"./INPUT/rpsfft/{directoryname}/{e}", img_back)
-        
-    return 0  
-
-#imgToFFT("./INPUT/Videos/","paper")
-#imgToFFT("./INPUT/Videos/","rock")
-#imgToFFT("./INPUT/Videos/","scissors")

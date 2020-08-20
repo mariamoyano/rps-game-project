@@ -10,10 +10,7 @@ import threading
 from tensorflow.keras.models import load_model
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-model=load_model('modelResNet101.h5')
-#model=load_model('modelDenseNet121.h5')
-#model=load_model("modelResNet50.h5")
-#model = load_model("modelIncResNetV2.h5")
+model=load_model('modelAdam.h5')
 winSound= "/home/maria/GIT/rps-game-project/INPUT/win.mp3"
 tieSound= "/home/maria/GIT/rps-game-project/INPUT/tie.wav"
 loseSound= "/home/maria/GIT/rps-game-project/INPUT/lose.mp3"
@@ -28,9 +25,10 @@ def play(yourChoice):
         return (result+"\n\n\n    YOU WIN!!!",winSound)
     else:
         return (result+"\n\n\n    YOU LOSE!!",loseSound)
+
 video = cv2.VideoCapture(0)
-video.set(cv2.CAP_PROP_FRAME_WIDTH, 600)
-video.set(cv2.CAP_PROP_FRAME_HEIGHT, 600)
+video.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+video.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 window = Tk()
 window.title("PAPER, ROCK OR SCISSORS")
@@ -45,18 +43,38 @@ def show():
 
     retval, frame = video.read()
     frame = cv2.flip(frame, 1)
-    cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA)
-    img = Image.fromarray(cv2image)
+    cv2image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    img = cv2.rectangle(cv2image,(180,25),(460,455),(255,0,55),6)
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    img1 = img[28:452, 183:457]
+    img2 = cv2.resize(img1,(68,106))
+    pred = model.predict(np.array([img2]))
+    cv2.putText(img,"[PAPER, ROCK, SCISSORS] = "+str(pred[0]),(1,15), font, 0.5,(255,255,255),1,cv2.LINE_AA)
+    cv2.putText(img,rps(pred),(250,430), font, 1,(255,255,255),2,cv2.LINE_AA)
+
+    img = Image.fromarray(img)
     imgtk = ImageTk.PhotoImage(image=img)
     lmain.imgtk = imgtk
     lmain.configure(image=imgtk)
     lmain.after(10, show)
 
+def rps(pred):
+   
+    if max(pred[0]) == (pred[0])[0]:
+        return "paper"
+    elif max((pred[0])) == (pred[0])[1]:
+        return "rock"
+    else:
+        return "scissors"
+
 def predict():
     retval,frame = video.read()
-    img=cv2.resize(frame,(48,36))
-    pred = model.predict(np.array([img]))
-    print("Predicted:",pred)
+    frame = cv2.flip(frame, 1)
+    img = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    img1 = img[28:452, 183:457]
+    img2 = cv2.resize(img1,(68,106))
+    pred = model.predict(np.array([img2]))
+    print("Predicted:",rps(pred))
 
     if max(pred[0]) == (pred[0])[0]:
         yourChoice=0
@@ -91,4 +109,5 @@ playbutton.pack(side=LEFT)
 show()
 
 window.mainloop()
+
 

@@ -3,6 +3,7 @@ INPUT/
 __pycache__/
 .vscode/
 .git/
+.gitignore
 __init__.py
 googlenet_rps.h5
 model.h5
@@ -14,7 +15,6 @@ modelRN50.h5
 modelRN101.h5
 modelRN101s.h5
 Pruebas/
-.Pruebas/
 src/libcudnn.so
 src/libcudnn.so.7
 tmp.h5

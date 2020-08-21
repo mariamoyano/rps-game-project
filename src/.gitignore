@@ -1,9 +1,0 @@
-INPUT/
-.INPUT/
-.ipynb_checkpoints/
-__pycache__/
-.env
-.vscode/
-mispruebas.ipynb
-Pruebas/
-.Pruebas/

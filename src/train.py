@@ -82,10 +82,11 @@ def modelGray():
 def modelResNet50():
     model = tensorflow.keras.applications.ResNet101(include_top=False,weights='imagenet',input_tensor=None,input_shape=(106, 68,3))
     input_tensor = Input(shape=(106, 68,3))
-    bn = BatchNormalization()(input_tensor)
-    x = model(bn)
+    #bn = BatchNormalization()(input_tensor)
+    #x = model(bn)
+    x = model(input_tensor)
     x = Flatten()(x)
-    x = Dropout(0.3)(x)
+    x = Dropout(0.5)(x)
     output= Dense(3, activation='softmax')(x)
     modelResNet = Model(inputs=input_tensor, outputs=output)
 
@@ -113,6 +114,9 @@ def modelDenseNet121():
     output= Dense(3, activation='softmax')(x)
     model = Model(inputs=dense.input, outputs=output)
     return model
+
+def get_optimizer(initial_learning_rate,steps_per_epoch):
+    return Adam(tensorflow.keras.optimizers.schedules.InverseTimeDecay(initial_learning_rate,decay_steps=steps_per_epoch*1000,decay_rate=1,staircase=False))
 
 def fit(model,trainGen,validationGen,optimizer,steps_per_epoch,epochs,validation_steps):
     callback = tensorflow.keras.callbacks.EarlyStopping(monitor="val_loss", patience=4)  
@@ -148,9 +152,9 @@ def classReport(model,validationGen,validsteps):
     class_labels = list(validationGen.class_indices.keys()) 
     print(classification_report(validationGen.classes, y_pred, target_names=class_labels))
     conf_mat = confusion_matrix(validationGen.classes, y_pred)
-    conf_mat_normalized = conf_mat.astype('float') / conf_mat.sum(axis=1)[:, np.newaxis]
+    #conf_mat_normalized = conf_mat.astype('float') / conf_mat.sum(axis=1)[:, np.newaxis]
     print('Confusion Matrix')
-    print(conf_mat_normalized)
-    sns.heatmap(conf_mat_normalized,annot=True)
+    print(conf_mat)
+    sns.heatmap(conf_mat,annot=True)
     plt.ylabel('True label')
     plt.xlabel('Predicted label')

@@ -6,11 +6,10 @@ import numpy as np
 import os
 from playsound import playsound
 import threading
-#from keras.preprocessing.image import img_to_array
 from tensorflow.keras.models import load_model
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-model=load_model('modelAdam.h5')
+
+model=load_model('model.h5')
 winSound= "/home/maria/GIT/rps-game-project/INPUT/win.mp3"
 tieSound= "/home/maria/GIT/rps-game-project/INPUT/tie.wav"
 loseSound= "/home/maria/GIT/rps-game-project/INPUT/lose.mp3"
@@ -49,7 +48,7 @@ def show():
     img1 = img[28:452, 183:457]
     img2 = cv2.resize(img1,(68,106))
     pred = model.predict(np.array([img2]))
-    cv2.putText(img,"[PAPER, ROCK, SCISSORS] = "+str(pred[0]),(1,15), font, 0.5,(255,255,255),1,cv2.LINE_AA)
+    cv2.putText(img,"[PAPER, ROCK, SCISSORS] = "+str(pred[0]),(1,15), font, 0.5,(0,255,0),1,cv2.LINE_AA)
     cv2.putText(img,rps(pred),(250,430), font, 1,(255,255,255),2,cv2.LINE_AA)
 
     img = Image.fromarray(img)

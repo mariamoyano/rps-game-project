@@ -14,6 +14,11 @@ modelGray.h5
 modelRN50.h5
 modelRN101.h5
 modelRN101s.h5
+finalized_model.sav
+modelRFC.sav
+modelRN50a.h5
+modeld.h5
+
 Pruebas/
 src/libcudnn.so
 src/libcudnn.so.7

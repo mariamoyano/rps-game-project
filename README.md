@@ -1,6 +1,7 @@
 # rps-game-project: 
 
 ![Alt-Text](/INPUT/game.png)
+
 ![Alt-Text](/INPUT/rps.gif)
 
 

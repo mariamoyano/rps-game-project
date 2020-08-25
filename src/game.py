@@ -7,7 +7,7 @@ import os
 from playsound import playsound
 import threading
 from tensorflow.keras.models import load_model
-
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 model=load_model('model.h5')
 winSound= "/home/maria/GIT/rps-game-project/INPUT/win.mp3"
